@@ -56,7 +56,7 @@ public class TurnManager : MonoBehaviour
         int valorDado = Random.Range(1, 7);
         Debug.Log("Dados: " + valorDado);
 
-        AtivarCameraPlayer(); // 👈 muda para camera do jogador
+        AtivarCameraPlayer();
 
         StartCoroutine(MoverJogador(valorDado));
     }
@@ -94,7 +94,7 @@ public class TurnManager : MonoBehaviour
         {
             player1.SetParent(pontoP1);
             player1.localPosition = Vector3.zero;
-            player1.localRotation = Quaternion.Euler(0, 0, 90); // 👈 rotação
+            player1.localRotation = Quaternion.Euler(0, 0, 90);
         }
         else
         {
@@ -105,7 +105,7 @@ public class TurnManager : MonoBehaviour
         {
             player2.SetParent(pontoP2);
             player2.localPosition = Vector3.zero;
-            player2.localRotation = Quaternion.Euler(0, 0, -90); // 👈 rotação
+            player2.localRotation = Quaternion.Euler(0, 0, -90);
         }
         else
         {
