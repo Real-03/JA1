@@ -10,6 +10,10 @@ public class TurnManager : MonoBehaviour
     public Player p1;
     public Player p2;
 
+    [Header("Player Colors")]
+    public Color p1Color = Color.red;
+    public Color p2Color = Color.blue;
+
     [Header("Cameras")]
     public Camera mainCamera;
 
@@ -26,6 +30,7 @@ public class TurnManager : MonoBehaviour
 
     [Header("Prefabs")]
     public GameObject housePrefab;
+    public GameObject bigHousePrefab;
     public float outwardOffset = 1.2f;
 
     private Transform[] tiles;
@@ -43,7 +48,6 @@ public class TurnManager : MonoBehaviour
 
     void Awake()
     {
-        // Setup tiles based on name hierarchy
         tiles = transform.Cast<Transform>()
             .Where(t => int.TryParse(t.name, out _))
             .OrderBy(t => int.Parse(t.name))
@@ -70,6 +74,7 @@ public class TurnManager : MonoBehaviour
 
     void StartTurn()
     {
+        SoundManager.Instance.PlayDiceRoll();
         int diceValue = Random.Range(1, 7);
         SwitchCamera(true);
         StartCoroutine(TurnFlow(diceValue));
@@ -78,9 +83,9 @@ public class TurnManager : MonoBehaviour
     IEnumerator TurnFlow(int diceValue)
     {
         isWaitingInput = true;
-
         ui.ShowDice(diceValue);
         yield return new WaitForSeconds(1.5f);
+        SoundManager.Instance.sfxSource.Stop();
         ui.dicePanel.SetActive(false);
 
         Player activePlayer = isP1Turn ? p1 : p2;
@@ -88,7 +93,8 @@ public class TurnManager : MonoBehaviour
 
         yield return StartCoroutine(MovePlayer(activePlayer, diceValue));
 
-        // Lap Bonus
+        SoundManager.Instance.sfxSource.Stop();
+
         if (activePlayer.currentPosition <= posBefore && diceValue > 0)
         {
             activePlayer.AddMoney(lapBonus);
@@ -107,13 +113,12 @@ public class TurnManager : MonoBehaviour
         for (int i = 0; i < steps; i++)
         {
             player.currentPosition = (player.currentPosition + 1) % tiles.Length;
-
-            // Skip secondary big house tile in step count
             if (secondaryToCanonical.ContainsKey(player.currentPosition))
                 player.currentPosition = (player.currentPosition + 1) % tiles.Length;
 
+            SoundManager.Instance.PlayWalk();
             UpdatePlayerVisualPosition();
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.3f);
         }
     }
 
@@ -130,7 +135,7 @@ public class TurnManager : MonoBehaviour
         int rent = isBig ? bigHouseRent : houseRent;
         int owner = owners[tileIdx];
 
-        if (owner != 0 && owner != (isP1Turn ? 1 : 2)) // Pay Rent
+        if (owner != 0 && owner != (isP1Turn ? 1 : 2))
         {
             ui.houseText.text = $"Owner: Player {owner}\nRent: {rent}€";
             ui.buyButton.gameObject.SetActive(false);
@@ -145,9 +150,9 @@ public class TurnManager : MonoBehaviour
             currentPlayer.SubtractMoney(rent);
             opponent.AddMoney(rent);
         }
-        else if (owner == 0) // Purchase Option
+        else if (owner == 0)
         {
-            ui.houseText.text = $"House Available!\nPrice: {price}€";
+            ui.houseText.text = isBig ? $"Big House Available!\nPrice: {price}€" : $"House Available!\nPrice: {price}€";
             ui.buyButton.gameObject.SetActive(true);
             ui.declineButton.GetComponentInChildren<TMP_Text>().text = "Decline";
             ui.housePanel.SetActive(true);
@@ -176,30 +181,57 @@ public class TurnManager : MonoBehaviour
 
     void SpawnHouseModel(int index)
     {
-        if (housePrefab == null) return;
+        int owner = owners[index];
+        bool isBig = bigHouses.Contains(index);
+
+        GameObject selectedPrefab = isBig ? bigHousePrefab : housePrefab;
+        if (selectedPrefab == null) return;
 
         Transform targetTile = tiles[index];
         Vector3 spawnPos;
 
-        // FIXED POSITIONING FOR BIG HOUSES
-        if (bigHouses.Contains(index))
+        if (isBig)
         {
-            // Center between the two tiles (current and next)
             Transform nextTile = tiles[(index + 1) % tiles.Length];
-            spawnPos = (targetTile.position + nextTile.position) / 2f;
+            spawnPos = Vector3.Lerp(targetTile.position, nextTile.position, 0.5f);
         }
         else
         {
             spawnPos = targetTile.position;
         }
 
-        // Calculate outward direction from board center
         Vector3 boardCenter = new Vector3(transform.position.x, spawnPos.y, transform.position.z);
         Vector3 dirOut = (spawnPos - boardCenter).normalized;
         spawnPos += dirOut * outwardOffset;
 
-        GameObject house = Instantiate(housePrefab, spawnPos, Quaternion.identity, targetTile);
+        GameObject house = Instantiate(selectedPrefab, spawnPos, Quaternion.identity, targetTile);
+
+        if (isBig)
+        {
+            int side = index / 10;
+            float defaultScale = 0.002f;
+            Vector3 newScale = house.transform.localScale;
+
+            if (side == 0 || side == 2) newScale.x = defaultScale;
+            else newScale.z = defaultScale;
+
+            house.transform.localScale = newScale;
+        }
+
+        Color colorToApply = (owner == 1) ? p1Color : p2Color;
+        ApplyColorToHouse(house, colorToApply);
+
         spawnedHouses[index] = house;
+    }
+
+    void ApplyColorToHouse(GameObject houseObj, Color color)
+    {
+        Renderer[] renderers = houseObj.GetComponentsInChildren<Renderer>();
+
+        foreach (Renderer r in renderers)
+        {
+            r.material.color = color;
+        }
     }
 
     void UpdatePlayerVisualPosition()
