@@ -1,270 +1,229 @@
 using UnityEngine;
-using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
-using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
-    [Header("Jogadores")]
-    public Transform player1;
-    public Transform player2;
+    [Header("Players")]
+    public Player p1;
+    public Player p2;
 
-    [Header("Câmeras")]
+    [Header("Cameras")]
     public Camera mainCamera;
-    public Camera cameraPlayer1;
-    public Camera cameraPlayer2;
 
-    [Header("UI - Dado")]
-    public GameObject painelDado;
-    public TMP_Text textDado;
+    [Header("References")]
+    public UIManager ui;
 
-    [Header("UI - Casa")]
-    public GameObject painelCasa;
-    public TMP_Text textCasa;
-    public Button botaoComprar;
-    public Button botaoRecusar;
+    [Header("Game Settings")]
+    public int startingMoney = 1500;
+    public int lapBonus = 200;
+    public int housePrice = 300;
+    public int houseRent = 150;
+    public int bigHousePrice = 600;
+    public int bigHouseRent = 300;
 
-    [Header("UI - Dinheiro")]
-    public TMP_Text textDinheiroP1;
-    public TMP_Text textDinheiroP2;
+    [Header("Prefabs")]
+    public GameObject housePrefab;
+    public float outwardOffset = 1.2f;
 
-    [Header("Configurações")]
-    public int dinheiroInicial = 1500;
-    public int dinheiroVoltaCompleta = 200;
-    public int precoCasa = 300;
-    public int taxaCasa = 150;
+    private Transform[] tiles;
+    private bool isP1Turn = true;
+    private bool isWaitingInput = false;
 
-    // Dados internos
-    private Transform[] casas;
-    private int posPlayer1 = 0;
-    private int posPlayer2 = 0;
-    private bool turnoPlayer1 = true;
-    private bool aguardandoInput = false;
+    // 0 = None, 1 = P1, 2 = P2
+    private int[] owners;
+    private Dictionary<int, GameObject> spawnedHouses = new Dictionary<int, GameObject>();
 
-    // Dinheiro
-    private int dinheiroP1;
-    private int dinheiroP2;
-
-    // Proprietários das casas: índice da casa é 0 = ninguém, 1 = P1, 2 = P2
-    private int[] proprietarios;
+    // Board Configuration
+    private readonly HashSet<int> whiteTiles = new HashSet<int> { 0, 2, 5, 7, 10, 13, 15, 17, 20, 23, 25, 26, 28, 30, 32, 34, 35, 37 };
+    private readonly Dictionary<int, int> secondaryToCanonical = new Dictionary<int, int> { { 4, 3 }, { 9, 8 }, { 12, 11 }, { 19, 18 }, { 22, 21 }, { 39, 38 } };
+    private readonly HashSet<int> bigHouses = new HashSet<int> { 3, 8, 11, 18, 21, 38 };
 
     void Awake()
     {
-        casas = new Transform[transform.childCount];
-        for (int i = 0; i < transform.childCount; i++)
-            casas[i] = transform.GetChild(i);
-
-        casas = casas
+        // Setup tiles based on name hierarchy
+        tiles = transform.Cast<Transform>()
             .Where(t => int.TryParse(t.name, out _))
             .OrderBy(t => int.Parse(t.name))
             .ToArray();
 
-        proprietarios = new int[casas.Length]; // todos começam a 0
+        owners = new int[tiles.Length];
     }
 
     void Start()
     {
-        dinheiroP1 = dinheiroInicial;
-        dinheiroP2 = dinheiroInicial;
-
-        painelDado.SetActive(false);
-        painelCasa.SetActive(false);
-
-        AtualizarPosicao();
-        AtualizarUIDinheiro();
+        p1.money = startingMoney;
+        p2.money = startingMoney;
+        ui.UpdateMoneyUI(p1.money, p2.money);
+        UpdatePlayerVisualPosition();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !aguardandoInput)
+        if (Input.GetKeyDown(KeyCode.Space) && !isWaitingInput)
+            StartTurn();
+    }
+
+    int GetCanonicalIndex(int index) => secondaryToCanonical.TryGetValue(index, out int main) ? main : index;
+
+    void StartTurn()
+    {
+        int diceValue = Random.Range(1, 7);
+        SwitchCamera(true);
+        StartCoroutine(TurnFlow(diceValue));
+    }
+
+    IEnumerator TurnFlow(int diceValue)
+    {
+        isWaitingInput = true;
+
+        ui.ShowDice(diceValue);
+        yield return new WaitForSeconds(1.5f);
+        ui.dicePanel.SetActive(false);
+
+        Player activePlayer = isP1Turn ? p1 : p2;
+        int posBefore = activePlayer.currentPosition;
+
+        yield return StartCoroutine(MovePlayer(activePlayer, diceValue));
+
+        // Lap Bonus
+        if (activePlayer.currentPosition <= posBefore && diceValue > 0)
         {
-            JogarTurno();
+            activePlayer.AddMoney(lapBonus);
+            ui.UpdateMoneyUI(p1.money, p2.money);
+        }
+
+        yield return StartCoroutine(CheckTileLogic());
+
+        SwitchCamera(false);
+        isP1Turn = !isP1Turn;
+        isWaitingInput = false;
+    }
+
+    IEnumerator MovePlayer(Player player, int steps)
+    {
+        for (int i = 0; i < steps; i++)
+        {
+            player.currentPosition = (player.currentPosition + 1) % tiles.Length;
+
+            // Skip secondary big house tile in step count
+            if (secondaryToCanonical.ContainsKey(player.currentPosition))
+                player.currentPosition = (player.currentPosition + 1) % tiles.Length;
+
+            UpdatePlayerVisualPosition();
+            yield return new WaitForSeconds(0.25f);
         }
     }
 
-    void JogarTurno()
+    IEnumerator CheckTileLogic()
     {
-        int valorDado = Random.Range(1, 7);
-        AtivarCameraPlayer();
-        StartCoroutine(FluxoTurno(valorDado));
-    }
+        Player currentPlayer = isP1Turn ? p1 : p2;
+        Player opponent = isP1Turn ? p2 : p1;
+        int tileIdx = GetCanonicalIndex(currentPlayer.currentPosition);
 
-    IEnumerator FluxoTurno(int valorDado)
-    {
-        aguardandoInput = true;
+        if (whiteTiles.Contains(tileIdx)) yield break;
 
-        // 1. Mostrar número do dado
-        painelDado.SetActive(true);
-        textDado.text = "Saiu o número: " + valorDado;
-        yield return new WaitForSeconds(2f);
-        painelDado.SetActive(false);
+        bool isBig = bigHouses.Contains(tileIdx);
+        int price = isBig ? bigHousePrice : housePrice;
+        int rent = isBig ? bigHouseRent : houseRent;
+        int owner = owners[tileIdx];
 
-        // 2. Mover jogador
-        int posAntes = turnoPlayer1 ? posPlayer1 : posPlayer2;
-        yield return StartCoroutine(MoverJogador(valorDado));
-        int posDepois = turnoPlayer1 ? posPlayer1 : posPlayer2;
-
-        // 3. Verificar volta completa
-        if (posDepois < posAntes || (posAntes == 0 && posDepois == valorDado - 1))
+        if (owner != 0 && owner != (isP1Turn ? 1 : 2)) // Pay Rent
         {
-            // deu a volta (posição voltou ao início)
+            ui.houseText.text = $"Owner: Player {owner}\nRent: {rent}€";
+            ui.buyButton.gameObject.SetActive(false);
+            ui.declineButton.GetComponentInChildren<TMP_Text>().text = "Pay";
+            ui.housePanel.SetActive(true);
+
+            bool clicked = false;
+            ui.declineButton.onClick.RemoveAllListeners();
+            ui.declineButton.onClick.AddListener(() => clicked = true);
+            yield return new WaitUntil(() => clicked);
+
+            currentPlayer.SubtractMoney(rent);
+            opponent.AddMoney(rent);
         }
-        // Forma mais simples: se a posição nova < posição antes = deu a volta
-        if (posDepois <= posAntes && valorDado > 0)
+        else if (owner == 0) // Purchase Option
         {
-            if (turnoPlayer1)
+            ui.houseText.text = $"House Available!\nPrice: {price}€";
+            ui.buyButton.gameObject.SetActive(true);
+            ui.declineButton.GetComponentInChildren<TMP_Text>().text = "Decline";
+            ui.housePanel.SetActive(true);
+
+            bool decided = false;
+            bool bought = false;
+
+            ui.buyButton.onClick.RemoveAllListeners();
+            ui.buyButton.onClick.AddListener(() => { bought = true; decided = true; });
+            ui.declineButton.onClick.RemoveAllListeners();
+            ui.declineButton.onClick.AddListener(() => decided = true);
+
+            yield return new WaitUntil(() => decided);
+
+            if (bought && currentPlayer.money >= price)
             {
-                dinheiroP1 += dinheiroVoltaCompleta;
-                Debug.Log("P1 completou volta! +" + dinheiroVoltaCompleta);
-            }
-            else
-            {
-                dinheiroP2 += dinheiroVoltaCompleta;
-                Debug.Log("P2 completou volta! +" + dinheiroVoltaCompleta);
-            }
-            AtualizarUIDinheiro();
-        }
-
-        // 4. Verificar casa atual
-        yield return StartCoroutine(VerificarCasa());
-
-        // 5. Terminar turno
-        VoltarCameraPrincipal();
-        turnoPlayer1 = !turnoPlayer1;
-        aguardandoInput = false;
-    }
-
-    IEnumerator MoverJogador(int passos)
-    {
-        for (int i = 0; i < passos; i++)
-        {
-            if (turnoPlayer1)
-                posPlayer1 = (posPlayer1 + 1) % casas.Length;
-            else
-                posPlayer2 = (posPlayer2 + 1) % casas.Length;
-
-            AtualizarPosicao();
-            yield return new WaitForSeconds(0.3f);
-        }
-    }
-
-    IEnumerator VerificarCasa()
-    {
-        int posAtual = turnoPlayer1 ? posPlayer1 : posPlayer2;
-        int jogadorAtual = turnoPlayer1 ? 1 : 2;
-        int jogadorOponente = turnoPlayer1 ? 2 : 1;
-        int proprietario = proprietarios[posAtual];
-
-        // Casa pertence ao oponente = pagar taxa
-        if (proprietario == jogadorOponente)
-        {
-            textCasa.text = "Esta casa pertence ao Jogador " + jogadorOponente +
-                            "!\nTens de pagar uma taxa de " + taxaCasa + "€";
-            botaoComprar.gameObject.SetActive(false);
-            botaoRecusar.GetComponentInChildren<TMP_Text>().text = "OK";
-            painelCasa.SetActive(true);
-
-            bool esperando = true;
-            botaoRecusar.onClick.RemoveAllListeners();
-            botaoRecusar.onClick.AddListener(() => esperando = false);
-
-            yield return new WaitUntil(() => !esperando);
-            painelCasa.SetActive(false);
-
-            // Cobrar taxa
-            if (turnoPlayer1)
-            {
-                dinheiroP1 -= taxaCasa;
-                dinheiroP2 += taxaCasa;
-            }
-            else
-            {
-                dinheiroP2 -= taxaCasa;
-                dinheiroP1 += taxaCasa;
-            }
-            AtualizarUIDinheiro();
-        }
-        // Casa é neutra = pode comprar
-        else if (proprietario == 0)
-        {
-            textCasa.text = "Casa disponível!\nPreço: " + precoCasa + "€\nQueres comprar?";
-            botaoComprar.gameObject.SetActive(true);
-            botaoRecusar.GetComponentInChildren<TMP_Text>().text = "Recusar";
-            painelCasa.SetActive(true);
-
-            bool comprou = false;
-            bool decidiu = false;
-
-            botaoComprar.onClick.RemoveAllListeners();
-            botaoRecusar.onClick.RemoveAllListeners();
-
-            botaoComprar.onClick.AddListener(() => { comprou = true; decidiu = true; });
-            botaoRecusar.onClick.AddListener(() => { decidiu = true; });
-
-            yield return new WaitUntil(() => decidiu);
-            painelCasa.SetActive(false);
-
-            if (comprou)
-            {
-                int dinheiro = turnoPlayer1 ? dinheiroP1 : dinheiroP2;
-                if (dinheiro >= precoCasa)
-                {
-                    proprietarios[posAtual] = jogadorAtual;
-                    if (turnoPlayer1) dinheiroP1 -= precoCasa;
-                    else dinheiroP2 -= precoCasa;
-                    AtualizarUIDinheiro();
-                    Debug.Log("Jogador " + jogadorAtual + " comprou a casa " + posAtual);
-                }
-                else
-                {
-                    Debug.Log("Dinheiro insuficiente!");
-                }
+                owners[tileIdx] = isP1Turn ? 1 : 2;
+                currentPlayer.SubtractMoney(price);
+                SpawnHouseModel(tileIdx);
             }
         }
-        // Casa já é do próprio jogador não faz nada
+
+        ui.housePanel.SetActive(false);
+        ui.UpdateMoneyUI(p1.money, p2.money);
     }
 
-    void AtualizarUIDinheiro()
+    void SpawnHouseModel(int index)
     {
-        textDinheiroP1.text = "P1: " + dinheiroP1 + "€";
-        textDinheiroP2.text = "P2: " + dinheiroP2 + "€";
-    }
+        if (housePrefab == null) return;
 
-    void AtualizarPosicao()
-    {
-        Transform casaP1 = casas[posPlayer1];
-        Transform casaP2 = casas[posPlayer2];
+        Transform targetTile = tiles[index];
+        Vector3 spawnPos;
 
-        Transform pontoP1 = casaP1.Find("Player1");
-        Transform pontoP2 = casaP2.Find("Player2");
-
-        if (pontoP1 != null)
+        // FIXED POSITIONING FOR BIG HOUSES
+        if (bigHouses.Contains(index))
         {
-            player1.SetParent(pontoP1);
-            player1.localPosition = Vector3.zero;
-            player1.localRotation = Quaternion.Euler(0, 0, 90);
+            // Center between the two tiles (current and next)
+            Transform nextTile = tiles[(index + 1) % tiles.Length];
+            spawnPos = (targetTile.position + nextTile.position) / 2f;
+        }
+        else
+        {
+            spawnPos = targetTile.position;
         }
 
-        if (pontoP2 != null)
+        // Calculate outward direction from board center
+        Vector3 boardCenter = new Vector3(transform.position.x, spawnPos.y, transform.position.z);
+        Vector3 dirOut = (spawnPos - boardCenter).normalized;
+        spawnPos += dirOut * outwardOffset;
+
+        GameObject house = Instantiate(housePrefab, spawnPos, Quaternion.identity, targetTile);
+        spawnedHouses[index] = house;
+    }
+
+    void UpdatePlayerVisualPosition()
+    {
+        void PositionPlayer(Player p, string pointName, float rotZ)
         {
-            player2.SetParent(pontoP2);
-            player2.localPosition = Vector3.zero;
-            player2.localRotation = Quaternion.Euler(0, 0, -90);
+            int visIdx = GetCanonicalIndex(p.currentPosition);
+            Transform slot = tiles[visIdx].Find(pointName);
+            if (slot)
+            {
+                p.transform.SetParent(slot);
+                p.transform.localPosition = Vector3.zero;
+                p.transform.localRotation = Quaternion.Euler(0, 0, rotZ);
+            }
         }
+
+        PositionPlayer(p1, "Player1", 90);
+        PositionPlayer(p2, "Player2", -90);
     }
 
-    void AtivarCameraPlayer()
+    void SwitchCamera(bool toPlayer)
     {
-        mainCamera.gameObject.SetActive(false);
-        if (turnoPlayer1) cameraPlayer1.gameObject.SetActive(true);
-        else cameraPlayer2.gameObject.SetActive(true);
-    }
-
-    void VoltarCameraPrincipal()
-    {
-        mainCamera.gameObject.SetActive(true);
-        cameraPlayer1.gameObject.SetActive(false);
-        cameraPlayer2.gameObject.SetActive(false);
+        mainCamera.gameObject.SetActive(!toPlayer);
+        p1.playerCamera.gameObject.SetActive(toPlayer && isP1Turn);
+        p2.playerCamera.gameObject.SetActive(toPlayer && !isP1Turn);
     }
 }

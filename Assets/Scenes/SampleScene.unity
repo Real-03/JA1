@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 150872930}
   - component: {fileID: 150872929}
   m_Layer: 5
-  m_Name: TextDado
+  m_Name: DiceText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,7 +153,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 14, y: 19}
+  m_AnchoredPosition: {x: 14, y: -3}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &150872929
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Saiu o n\xFAmero: 3"
+  m_text: 'Dice roll:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -242,7 +242,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: -39.439636}
+  m_margin: {x: 0, y: 0, z: 0, w: 8.21167}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -577,7 +577,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Comprar
+  m_text: Buy
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -669,7 +669,7 @@ GameObject:
   - component: {fileID: 780517868}
   - component: {fileID: 780517867}
   m_Layer: 5
-  m_Name: PainelDado
+  m_Name: DicePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -692,8 +692,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 300, y: 280}
+  m_AnchoredPosition: {x: 0, y: -120}
+  m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &780517867
 MonoBehaviour:
@@ -745,7 +745,7 @@ GameObject:
   - component: {fileID: 808118629}
   - component: {fileID: 808118628}
   m_Layer: 5
-  m_Name: TextCasa
+  m_Name: HouseText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -767,7 +767,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -22, y: -100}
+  m_AnchoredPosition: {x: -30, y: -70}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &808118628
@@ -790,7 +790,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Comprar casa?
+  m_text: Buy house?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -856,7 +856,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -78.36304, w: 0}
+  m_margin: {x: -31.891296, y: 0, z: -101.22266, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -931,7 +931,7 @@ GameObject:
   - component: {fileID: 991162445}
   - component: {fileID: 991162444}
   m_Layer: 5
-  m_Name: TextDinheiroP1
+  m_Name: MoneyTextP1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -953,7 +953,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 200, y: -100}
+  m_AnchoredPosition: {x: 200, y: -70}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &991162444
@@ -1069,7 +1069,7 @@ GameObject:
   - component: {fileID: 1028553086}
   - component: {fileID: 1028553085}
   m_Layer: 5
-  m_Name: BotaoRecusar
+  m_Name: DeclineButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1092,7 +1092,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 250, y: -300}
+  m_AnchoredPosition: {x: 250, y: -250}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1028553085
@@ -1347,7 +1347,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Recusar
+  m_text: Decline
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1593,6 +1593,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 1608190386}
   - {fileID: 1348060750}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1608,7 +1609,7 @@ GameObject:
   - component: {fileID: 1522820136}
   - component: {fileID: 1522820135}
   m_Layer: 5
-  m_Name: TextDinheiroP2
+  m_Name: MoneyTextP2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1630,7 +1631,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -200, y: -100}
+  m_AnchoredPosition: {x: -200, y: -70}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1522820135
@@ -1742,8 +1743,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1608190386}
+  - component: {fileID: 1608190387}
   m_Layer: 0
-  m_Name: BoardManager
+  m_Name: UIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1757,13 +1759,33 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1608190384}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.6360044, y: -3.0650246, z: 3.2846465}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.9128444, y: -3.0650246, z: 25.623507}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1509721639}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1608190387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608190384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5793b7f8086e814ea39ed50af1acdcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UIManager
+  dicePanel: {fileID: 780517865}
+  diceText: {fileID: 150872929}
+  housePanel: {fileID: 2128726973}
+  houseText: {fileID: 808118628}
+  buyButton: {fileID: 1659796273}
+  declineButton: {fileID: 1028553085}
+  moneyTextP1: {fileID: 991162444}
+  moneyTextP2: {fileID: 1522820135}
 --- !u!1 &1659796271
 GameObject:
   m_ObjectHideFlags: 0
@@ -1777,7 +1799,7 @@ GameObject:
   - component: {fileID: 1659796274}
   - component: {fileID: 1659796273}
   m_Layer: 5
-  m_Name: BotaoComprar
+  m_Name: BuyButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1800,7 +1822,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: -250, y: -300}
+  m_AnchoredPosition: {x: -250, y: -250}
   m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1659796273
@@ -1982,7 +2004,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1740358149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2101,6 +2123,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4218383114002282285}
   m_LocalEulerAnglesHint: {x: 153.6, y: -120.2, z: 180}
+--- !u!1 &1762964462
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1762964463}
+  m_Layer: 0
+  m_Name: -----------------
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1762964463
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1762964462}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.72316, y: -0, z: -22.33886}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1781605103
 GameObject:
   m_ObjectHideFlags: 0
@@ -2146,7 +2199,7 @@ GameObject:
   - component: {fileID: 1910587892}
   - component: {fileID: 1910587891}
   m_Layer: 5
-  m_Name: PainelDinheiro
+  m_Name: MoneyPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2391,7 +2444,7 @@ GameObject:
   - component: {fileID: 2128726976}
   - component: {fileID: 2128726975}
   m_Layer: 5
-  m_Name: PainelCasa
+  m_Name: HousePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12670,9 +12723,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 2136720997410693854}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6fab4a42c6d5f4dba64fe989d50ee8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b5de32d8f207ab4b8f232508151befe, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  name: WheelChair
+  transform: {fileID: 4218383114002282285}
+  playerCamera: {fileID: 1740358151}
+  money: 0
+  currentPosition: 0
 --- !u!23 &4233234828725823347
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -14855,9 +14913,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 5148038009273199737}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb6fab4a42c6d5f4dba64fe989d50ee8, type: 3}
+  m_Script: {fileID: 11500000, guid: 9b5de32d8f207ab4b8f232508151befe, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player
+  name: BlindMan
+  transform: {fileID: 2973299390148612025}
+  playerCamera: {fileID: 1976036897}
+  money: 0
+  currentPosition: 0
 --- !u!23 &5156384398153349333
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -24056,7 +24119,7 @@ GameObject:
   - component: {fileID: 3171889763744451644}
   - component: {fileID: 9091989473334075885}
   m_Layer: 0
-  m_Name: Tabuleiro
+  m_Name: Board
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24074,23 +24137,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfd549ed718c3dc4f8299fc5da795e7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 2973299390148612025}
-  player2: {fileID: 4218383114002282285}
+  p1: {fileID: 5148038009273199738}
+  p2: {fileID: 4218383114002282286}
   mainCamera: {fileID: 330585545}
-  cameraPlayer1: {fileID: 1976036897}
-  cameraPlayer2: {fileID: 1740358151}
-  painelDado: {fileID: 780517865}
-  textDado: {fileID: 150872929}
-  painelCasa: {fileID: 2128726973}
-  textCasa: {fileID: 808118628}
-  botaoComprar: {fileID: 1659796273}
-  botaoRecusar: {fileID: 1028553085}
-  textDinheiroP1: {fileID: 991162444}
-  textDinheiroP2: {fileID: 1522820135}
-  dinheiroInicial: 1500
-  dinheiroVoltaCompleta: 200
-  precoCasa: 300
-  taxaCasa: 150
+  ui: {fileID: 1608190387}
+  startingMoney: 1500
+  lapBonus: 200
+  housePrice: 300
+  houseRent: 150
+  bigHousePrice: 600
+  bigHouseRent: 300
+  housePrefab: {fileID: 4902209608296223910, guid: 11cb044e4c490d141a7da90760458a9f, type: 3}
+  outwardOffset: 0.8
 --- !u!1 &9100494683971581400
 GameObject:
   m_ObjectHideFlags: 0
@@ -24439,9 +24497,9 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 1683006368}
   - {fileID: 2071642138}
   - {fileID: 1437661751}
   - {fileID: 1781605104}
+  - {fileID: 1762964463}
   - {fileID: 1509721639}
-  - {fileID: 1683006368}
-  - {fileID: 1608190386}
