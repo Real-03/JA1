@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 using TMPro;
 using System.Collections;
-using NUnit.Framework;
 using System.Collections.Generic;
 
 public class MenuController : MonoBehaviour
@@ -29,7 +29,7 @@ public class MenuController : MonoBehaviour
     [Header("Graphics Settings")]
     [SerializeField] private Slider brightnessSlider = null;
     [SerializeField] private TMP_Text brightnessTextValue = null;
-    
+
     private int _qualityLevel;
     private bool _isFullScreen;
     private float _brightnessLevel;
@@ -45,9 +45,8 @@ public class MenuController : MonoBehaviour
     {
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
-        
-        List<string> options = new List<string>();
 
+        List<string> options = new List<string>();
         int currentResolutionIndex = 0;
 
         for (int i = 0; i < resolutions.Length; i++)
@@ -55,14 +54,37 @@ public class MenuController : MonoBehaviour
             string option = resolutions[i].width + " x " + resolutions[i].height;
             options.Add(option);
             if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
-            {
                 currentResolutionIndex = i;
-            }
         }
+
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
     }
+
+
+    public void Narrate_Play() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_Play);
+    public void Narrate_Quit() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_Quit);
+    public void Narrate_Settings() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_Settings);
+
+    public void Narrate_AudioSettings() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_AudioSettings);
+    public void Narrate_GeneralOptions() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_GeneralOptions);
+    public void Narrate_Graphics() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_Graphics);
+    public void Narrate_Controls() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_Controls);
+    public void Narrate_ApplyButton() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_ApplyButton);
+
+    public void Narrate_SFXVolume() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_SFXVolume);
+    public void Narrate_MusicVolume() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_MusicVolume);
+    public void Narrate_NarratorVolume() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_NarratorVolume);
+
+    public void Narrate_ControllerSen() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_ControllerSensitivity);
+    public void Narrate_InvertY() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_InvertY);
+
+    public void Narrate_Brightness() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_Brightness);
+    public void Narrate_Fullscreen() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_Fullscreen);
+    public void Narrate_Quality() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_Quality);
+    public void Narrate_Resolution() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_Resolution);
+
 
     public void SetResolution(int resolutionIndex)
     {
@@ -116,15 +138,7 @@ public class MenuController : MonoBehaviour
 
     public void GameplayApply()
     {
-        if(InvertYToggle.isOn)
-        {
-            PlayerPrefs.SetInt("masterInvertY", 1);
-        }
-        else
-        {
-            PlayerPrefs.SetInt("masterInvertY", 0);
-        }
-
+        PlayerPrefs.SetInt("masterInvertY", InvertYToggle.isOn ? 1 : 0);
         PlayerPrefs.SetFloat("masterSen", mainControllerSen);
         StartCoroutine(ConfirmationBox());
     }
@@ -135,7 +149,7 @@ public class MenuController : MonoBehaviour
         brightnessTextValue.text = brightness.ToString("0.0");
     }
 
-    public void SetFullScreen (bool isFullScreen )
+    public void SetFullScreen(bool isFullScreen)
     {
         _isFullScreen = isFullScreen;
     }

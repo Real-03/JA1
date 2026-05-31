@@ -7,11 +7,61 @@ public class SoundManager : MonoBehaviour
     [Header("Audio Sources")]
     public AudioSource musicSource;
     public AudioSource sfxSource;
+    public AudioSource narratorSource;
 
-    [Header("Audio Clips")]
+    [Header("Audio Clips - SFX")]
     public AudioClip backgroundMusic;
     public AudioClip diceRollSFX;
     public AudioClip walkSFX;
+
+    [Header("Narrator - Main Menu")]
+    public AudioClip narr_Play;
+    public AudioClip narr_Quit;
+    public AudioClip narr_Settings;
+
+    [Header("Narrator - Pause Menu")]
+    public AudioClip narr_ResumeGame;
+    public AudioClip narr_ReturnToMainMenu;
+
+    [Header("Narrator - Options Buttons")]
+    public AudioClip narr_AudioSettings;
+    public AudioClip narr_GeneralOptions;
+    public AudioClip narr_Graphics;
+    public AudioClip narr_Controls;
+    public AudioClip narr_ApplyButton;
+
+    [Header("Narrator - Audio Settings")]
+    public AudioClip narr_SFXVolume;
+    public AudioClip narr_MusicVolume;
+    public AudioClip narr_NarratorVolume;
+
+    [Header("Narrator - General Settings")]
+    public AudioClip narr_ControllerSensitivity;
+    public AudioClip narr_InvertY;
+
+    [Header("Narrator - Graphics Settings")]
+    public AudioClip narr_Brightness;
+    public AudioClip narr_Fullscreen;
+    public AudioClip narr_Quality;
+    public AudioClip narr_Resolution;
+
+    [Header("Narrator - Dice")]
+    public AudioClip[] narr_Dice;
+
+    [Header("Narrator - Turn")]
+    public AudioClip narr_P1Turn;
+    public AudioClip narr_P2Turn;
+
+    [Header("Narrator - House")]
+    public AudioClip narr_BuyHouse;
+    public AudioClip narr_Yes;
+    public AudioClip narr_No;
+
+    [Header("Narrator - Properties")]
+    public AudioClip[] narr_Properties;
+
+    [Header("Narrator - Owned Properties")]
+    public AudioClip[] narr_HaveHouse;
 
     void Awake()
     {
@@ -54,8 +104,33 @@ public class SoundManager : MonoBehaviour
     public void PlayWalk()
     {
         if (walkSFX != null)
-        {
             sfxSource.PlayOneShot(walkSFX);
-        }
+    }
+
+    public void PlayNarrator(AudioClip clip)
+    {
+        if (clip == null) return;
+        narratorSource.Stop();
+        narratorSource.clip = clip;
+        narratorSource.Play();
+    }
+
+    public void PlayDiceNarrator(int diceValue)
+    {
+        int idx = diceValue - 1;
+        if (narr_Dice != null && idx >= 0 && idx < narr_Dice.Length)
+            PlayNarrator(narr_Dice[idx]);
+    }
+
+    public void PlayPropertyNarrator(int propertyIndex)
+    {
+        if (narr_Properties != null && propertyIndex >= 0 && propertyIndex < narr_Properties.Length)
+            PlayNarrator(narr_Properties[propertyIndex]);
+    }
+
+    public void PlayHaveHouseNarrator(int propertyIndex)
+    {
+        if (narr_HaveHouse != null && propertyIndex >= 0 && propertyIndex < narr_HaveHouse.Length)
+            PlayNarrator(narr_HaveHouse[propertyIndex]);
     }
 }

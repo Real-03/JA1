@@ -14,16 +14,16 @@ public class PauseMenuController : MonoBehaviour
     {
         if (InputSystem.actions["PauseMenu"].WasPressedThisDynamicUpdate())
         {
-            if (_isPaused)
-            {
-                ResumeGame();
-            }
-            else
-            {
-                PauseGame();
-            }
+            if (_isPaused) ResumeGame();
+            else PauseGame();
         }
     }
+
+
+    public void Narrate_Resume() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_ResumeGame);
+    public void Narrate_ReturnToMenu() => SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_ReturnToMainMenu);
+
+
     public void ResumeGame()
     {
         _pauseMenuUI.SetActive(false);
@@ -31,6 +31,7 @@ public class PauseMenuController : MonoBehaviour
         _isPaused = false;
         Debug.Log("Game Resumed");
     }
+
     public void PauseGame()
     {
         _pauseMenuUI.SetActive(true);
@@ -46,4 +47,3 @@ public class PauseMenuController : MonoBehaviour
         Debug.Log("Returned to Menu");
     }
 }
-

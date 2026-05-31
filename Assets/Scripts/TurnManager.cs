@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,20 +32,29 @@ public class TurnManager : MonoBehaviour
     [Header("Prefabs")]
     public GameObject housePrefab;
     public GameObject bigHousePrefab;
-    public float outwardOffset = 1.2f;
 
     private Transform[] tiles;
     private bool isP1Turn = true;
     private bool isWaitingInput = false;
+    private bool isProcessingTurn = false;
 
-    // 0 = None, 1 = P1, 2 = P2
     private int[] owners;
     private Dictionary<int, GameObject> spawnedHouses = new Dictionary<int, GameObject>();
 
-    // Board Configuration
     private readonly HashSet<int> whiteTiles = new HashSet<int> { 0, 2, 5, 7, 10, 13, 15, 17, 20, 23, 25, 26, 28, 30, 32, 34, 35, 37 };
     private readonly Dictionary<int, int> secondaryToCanonical = new Dictionary<int, int> { { 4, 3 }, { 9, 8 }, { 12, 11 }, { 19, 18 }, { 22, 21 }, { 39, 38 } };
     private readonly HashSet<int> bigHouses = new HashSet<int> { 3, 8, 11, 18, 21, 38 };
+
+    private readonly Dictionary<int, int> tileIndexToPropertyIndex = new Dictionary<int, int>
+    {
+        { 1, 0 }, { 3, 1 }, { 6, 2 }, { 8, 3 }, { 9, 4 }, { 11, 5 },
+        { 12, 6 }, { 14, 7 }, { 16, 8 }, { 18, 9 }, { 19, 10 }, { 21, 11 },
+        { 22, 12 }, { 24, 13 }, { 27, 14 }, { 29, 15 }, { 31, 16 }, { 33, 17 },
+        { 36, 18 }, { 38, 19 }, { 39, 20 }
+    };
+
+    private bool isAnnouncingPosition = false;
+    private bool isAnnouncingProperties = false;
 
     void Awake()
     {
@@ -62,12 +72,61 @@ public class TurnManager : MonoBehaviour
         p2.money = startingMoney;
         ui.UpdateMoneyUI(p1.money, p2.money);
         UpdatePlayerVisualPosition();
+        StartCoroutine(AnnounceFirstTurn());
+    }
+
+    IEnumerator AnnounceFirstTurn()
+    {
+        yield return new WaitForSeconds(0.5f);
+        SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_P1Turn);
+        yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isWaitingInput)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && !isWaitingInput && !isProcessingTurn)
             StartTurn();
+
+        if (Keyboard.current.cKey.wasPressedThisFrame && !isAnnouncingPosition && !isProcessingTurn)
+            StartCoroutine(AnnounceCurrentPosition());
+
+        if (Keyboard.current.vKey.wasPressedThisFrame && !isAnnouncingProperties && !isProcessingTurn)
+            StartCoroutine(AnnounceOwnedProperties());
+    }
+
+    IEnumerator AnnounceCurrentPosition()
+    {
+        isAnnouncingPosition = true;
+        Player activePlayer = isP1Turn ? p1 : p2;
+        int tileIdx = GetCanonicalIndex(activePlayer.currentPosition);
+
+        if (tileIndexToPropertyIndex.TryGetValue(tileIdx, out int propIdx))
+        {
+            SoundManager.Instance.PlayPropertyNarrator(propIdx);
+            yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
+        }
+        isAnnouncingPosition = false;
+    }
+
+    IEnumerator AnnounceOwnedProperties()
+    {
+        isAnnouncingProperties = true;
+        int playerNum = isP1Turn ? 1 : 2;
+        List<int> ownedTiles = new List<int>();
+
+        for (int i = 0; i < owners.Length; i++)
+        {
+            if (owners[i] == playerNum && tileIndexToPropertyIndex.ContainsKey(i))
+                ownedTiles.Add(i);
+        }
+
+        foreach (int tileIdx in ownedTiles)
+        {
+            int propIdx = tileIndexToPropertyIndex[tileIdx];
+            SoundManager.Instance.PlayHaveHouseNarrator(propIdx);
+            yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
+        }
+        isAnnouncingProperties = false;
     }
 
     int GetCanonicalIndex(int index) => secondaryToCanonical.TryGetValue(index, out int main) ? main : index;
@@ -83,13 +142,19 @@ public class TurnManager : MonoBehaviour
     IEnumerator TurnFlow(int diceValue)
     {
         isWaitingInput = true;
+        isProcessingTurn = true;
+
         ui.ShowDice(diceValue);
+
         yield return new WaitForSeconds(1.5f);
         SoundManager.Instance.sfxSource.Stop();
+        SoundManager.Instance.PlayDiceNarrator(diceValue);
         ui.dicePanel.SetActive(false);
 
         Player activePlayer = isP1Turn ? p1 : p2;
         int posBefore = activePlayer.currentPosition;
+
+        yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
 
         yield return StartCoroutine(MovePlayer(activePlayer, diceValue));
 
@@ -101,10 +166,18 @@ public class TurnManager : MonoBehaviour
             ui.UpdateMoneyUI(p1.money, p2.money);
         }
 
+        yield return StartCoroutine(AnnounceCurrentPosition());
+
         yield return StartCoroutine(CheckTileLogic());
 
         SwitchCamera(false);
         isP1Turn = !isP1Turn;
+
+        AudioClip turnClip = isP1Turn ? SoundManager.Instance.narr_P1Turn : SoundManager.Instance.narr_P2Turn;
+        SoundManager.Instance.PlayNarrator(turnClip);
+        yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
+
+        isProcessingTurn = false;
         isWaitingInput = false;
     }
 
@@ -157,6 +230,9 @@ public class TurnManager : MonoBehaviour
             ui.declineButton.GetComponentInChildren<TMP_Text>().text = "Decline";
             ui.housePanel.SetActive(true);
 
+            SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_BuyHouse);
+            yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
+
             bool decided = false;
             bool bought = false;
 
@@ -169,9 +245,16 @@ public class TurnManager : MonoBehaviour
 
             if (bought && currentPlayer.money >= price)
             {
+                SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_Yes);
+                yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
                 owners[tileIdx] = isP1Turn ? 1 : 2;
                 currentPlayer.SubtractMoney(price);
                 SpawnHouseModel(tileIdx);
+            }
+            else
+            {
+                SoundManager.Instance.PlayNarrator(SoundManager.Instance.narr_No);
+                yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
             }
         }
 
@@ -188,35 +271,15 @@ public class TurnManager : MonoBehaviour
         if (selectedPrefab == null) return;
 
         Transform targetTile = tiles[index];
-        Vector3 spawnPos;
 
-        if (isBig)
+        Transform houseSlot = targetTile.Find("House");
+        if (houseSlot == null)
         {
-            Transform nextTile = tiles[(index + 1) % tiles.Length];
-            spawnPos = Vector3.Lerp(targetTile.position, nextTile.position, 0.5f);
-        }
-        else
-        {
-            spawnPos = targetTile.position;
+            Debug.LogWarning($"Tile {index} has no child named 'House'.");
+            return;
         }
 
-        Vector3 boardCenter = new Vector3(transform.position.x, spawnPos.y, transform.position.z);
-        Vector3 dirOut = (spawnPos - boardCenter).normalized;
-        spawnPos += dirOut * outwardOffset;
-
-        GameObject house = Instantiate(selectedPrefab, spawnPos, Quaternion.identity, targetTile);
-
-        if (isBig)
-        {
-            int side = index / 10;
-            float defaultScale = 0.002f;
-            Vector3 newScale = house.transform.localScale;
-
-            if (side == 0 || side == 2) newScale.x = defaultScale;
-            else newScale.z = defaultScale;
-
-            house.transform.localScale = newScale;
-        }
+        GameObject house = Instantiate(selectedPrefab, houseSlot.position, houseSlot.rotation, houseSlot);
 
         Color colorToApply = (owner == 1) ? p1Color : p2Color;
         ApplyColorToHouse(house, colorToApply);
@@ -227,11 +290,8 @@ public class TurnManager : MonoBehaviour
     void ApplyColorToHouse(GameObject houseObj, Color color)
     {
         Renderer[] renderers = houseObj.GetComponentsInChildren<Renderer>();
-
         foreach (Renderer r in renderers)
-        {
             r.material.color = color;
-        }
     }
 
     void UpdatePlayerVisualPosition()

@@ -255,6 +255,7 @@ GameObject:
   - component: {fileID: 18329620}
   - component: {fileID: 18329619}
   - component: {fileID: 18329618}
+  - component: {fileID: 18329621}
   m_Layer: 0
   m_Name: SettingsBtn
   m_TagString: Untagged
@@ -461,6 +462,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 18329616}
   m_CullTransparentMesh: 1
+--- !u!114 &18329621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 18329616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_Settings
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &20757188
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,6 +578,7 @@ GameObject:
   - component: {fileID: 49159374}
   - component: {fileID: 49159373}
   - component: {fileID: 49159372}
+  - component: {fileID: 49159375}
   m_Layer: 0
   m_Name: GraphicsBtn
   m_TagString: Untagged
@@ -572,7 +603,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 179, y: 461.29}
+  m_AnchoredPosition: {x: 179, y: 435}
   m_SizeDelta: {x: 279.19, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &49159372
@@ -705,6 +736,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 49159370}
   m_CullTransparentMesh: 1
+--- !u!114 &49159375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 49159370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_Graphics
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &56710522
 GameObject:
   m_ObjectHideFlags: 0
@@ -1953,6 +2017,7 @@ GameObject:
   - component: {fileID: 142302955}
   - component: {fileID: 142302954}
   - component: {fileID: 142302953}
+  - component: {fileID: 142302956}
   m_Layer: 0
   m_Name: NewGameBtn
   m_TagString: Untagged
@@ -2135,6 +2200,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 142302951}
   m_CullTransparentMesh: 1
+--- !u!114 &142302956
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 142302951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_Play
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &151476292
 GameObject:
   m_ObjectHideFlags: 0
@@ -2313,6 +2407,7 @@ GameObject:
   m_Component:
   - component: {fileID: 159304806}
   - component: {fileID: 159304807}
+  - component: {fileID: 159304808}
   m_Layer: 0
   m_Name: MusicSlider
   m_TagString: Untagged
@@ -2407,6 +2502,35 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &159304808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159304805}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_MusicVolume
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &159885553
 GameObject:
   m_ObjectHideFlags: 0
@@ -2629,6 +2753,7 @@ GameObject:
   m_Component:
   - component: {fileID: 160927357}
   - component: {fileID: 160927358}
+  - component: {fileID: 160927359}
   m_Layer: 0
   m_Name: FullScreenToggle
   m_TagString: Untagged
@@ -2717,6 +2842,35 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_IsOn: 0
+--- !u!114 &160927359
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 160927356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_Fullscreen
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &164507486
 GameObject:
   m_ObjectHideFlags: 0
@@ -4143,7 +4297,6 @@ MonoBehaviour:
   bigHouseRent: 300
   housePrefab: {fileID: 4902209608296223910, guid: 11cb044e4c490d141a7da90760458a9f, type: 3}
   bigHousePrefab: {fileID: 4902209608296223910, guid: ce8d6d39e9e32534ba2537ed22046923, type: 3}
-  outwardOffset: 1
 --- !u!1 &334319112
 GameObject:
   m_ObjectHideFlags: 0
@@ -4384,6 +4537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 399980960}
   - component: {fileID: 399980961}
+  - component: {fileID: 399980962}
   m_Layer: 0
   m_Name: NarratorSlider
   m_TagString: Untagged
@@ -4478,6 +4632,35 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &399980962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 399980959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_NarratorVolume
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &443532436
 GameObject:
   m_ObjectHideFlags: 0
@@ -5069,6 +5252,7 @@ GameObject:
   - component: {fileID: 537985324}
   - component: {fileID: 537985323}
   - component: {fileID: 537985322}
+  - component: {fileID: 537985325}
   m_Layer: 0
   m_Name: AudioBtn
   m_TagString: Untagged
@@ -5093,7 +5277,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -219, y: 461.29}
+  m_AnchoredPosition: {x: -219, y: 435}
   m_SizeDelta: {x: 279.19, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &537985322
@@ -5226,6 +5410,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 537985320}
   m_CullTransparentMesh: 1
+--- !u!114 &537985325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 537985320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_AudioSettings
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &538022461
 GameObject:
   m_ObjectHideFlags: 0
@@ -5596,7 +5813,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -44, y: 0}
   m_SizeDelta: {x: 550, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &595459777
@@ -5625,7 +5842,14 @@ MonoBehaviour:
     Buy property - LMB
 
 
-    Pause Menu - Escape'
+    Pause Menu - Escape
+
+
+    Narrate
+    house - C
+
+
+    Narrate owned houses - V'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56a6fd95ee5f0914ba0b748360923320, type: 2}
   m_sharedMaterial: {fileID: 8467724400268315302, guid: 56a6fd95ee5f0914ba0b748360923320, type: 2}
@@ -5691,7 +5915,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -125.885345, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -5877,6 +6101,7 @@ GameObject:
   - component: {fileID: 648860009}
   - component: {fileID: 648860008}
   - component: {fileID: 648860010}
+  - component: {fileID: 648860011}
   m_Layer: 0
   m_Name: ResolutionDropdown
   m_TagString: Untagged
@@ -6021,6 +6246,35 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   m_AlphaFadeSpeed: 0.15
+--- !u!114 &648860011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 648860006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_Resolution
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &655108798
 GameObject:
   m_ObjectHideFlags: 0
@@ -6483,6 +6737,7 @@ GameObject:
   m_Component:
   - component: {fileID: 709720752}
   - component: {fileID: 709720753}
+  - component: {fileID: 709720754}
   m_Layer: 0
   m_Name: BrightnessSenSlider
   m_TagString: Untagged
@@ -6577,6 +6832,35 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &709720754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 709720751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_Brightness
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &737949544
 GameObject:
   m_ObjectHideFlags: 0
@@ -7440,6 +7724,7 @@ GameObject:
   - component: {fileID: 871163442}
   - component: {fileID: 871163441}
   - component: {fileID: 871163440}
+  - component: {fileID: 871163443}
   m_Layer: 0
   m_Name: ApplyBtn
   m_TagString: Untagged
@@ -7464,7 +7749,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -484}
+  m_AnchoredPosition: {x: 0, y: -437}
   m_SizeDelta: {x: 552.2, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &871163440
@@ -7609,6 +7894,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 871163438}
   m_CullTransparentMesh: 1
+--- !u!114 &871163443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 871163438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_ApplyButton
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &877270940
 GameObject:
   m_ObjectHideFlags: 0
@@ -10213,6 +10531,7 @@ GameObject:
   - component: {fileID: 1174581136}
   - component: {fileID: 1174581135}
   - component: {fileID: 1174581134}
+  - component: {fileID: 1174581137}
   m_Layer: 0
   m_Name: ControlsBtn
   m_TagString: Untagged
@@ -10237,7 +10556,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 584, y: 461.29}
+  m_AnchoredPosition: {x: 584, y: 435}
   m_SizeDelta: {x: 295, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1174581134
@@ -10370,6 +10689,39 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1174581132}
   m_CullTransparentMesh: 1
+--- !u!114 &1174581137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174581132}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_Controls
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1179154707
 GameObject:
   m_ObjectHideFlags: 0
@@ -11059,6 +11411,7 @@ GameObject:
   - component: {fileID: 1229418805}
   - component: {fileID: 1229418803}
   - component: {fileID: 1229418804}
+  - component: {fileID: 1229418807}
   m_Layer: 0
   m_Name: GeneralSettingsBtn
   m_TagString: Untagged
@@ -11213,9 +11566,42 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -619, y: 461.29}
+  m_AnchoredPosition: {x: -619, y: 435}
   m_SizeDelta: {x: 279.19, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1229418807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1229418802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls: []
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_GeneralOptions
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1232823857
 GameObject:
   m_ObjectHideFlags: 0
@@ -12045,251 +12431,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 294917466}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1345783850
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1345783854}
-  - component: {fileID: 1345783853}
-  - component: {fileID: 1345783852}
-  - component: {fileID: 1345783851}
-  m_Layer: 0
-  m_Name: SoundManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!82 &1345783851
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345783850}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 0.6
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!82 &1345783852
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345783850}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
-  m_PlayOnAwake: 0
-  m_Volume: 0.7
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
---- !u!114 &1345783853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345783850}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75d090dac996372479c0eef370c8bd30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
-  musicSource: {fileID: 1345783852}
-  sfxSource: {fileID: 1345783851}
-  backgroundMusic: {fileID: 8300000, guid: 250a0de2f9c820a41912df66e4212d2e, type: 3}
-  diceRollSFX: {fileID: 8300000, guid: 7710daaa7155288449ea5f80c639d483, type: 3}
-  walkSFX: {fileID: 8300000, guid: 6abd6ab40f936044488130cb3419d30e, type: 3}
---- !u!4 &1345783854
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345783850}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6.20627, y: 3.19, z: 0.62849}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1346462423
 GameObject:
   m_ObjectHideFlags: 0
@@ -12720,6 +12861,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1380470778}
   - component: {fileID: 1380470779}
+  - component: {fileID: 1380470780}
   m_Layer: 0
   m_Name: SFXSlider
   m_TagString: Untagged
@@ -12814,6 +12956,35 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1380470780
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1380470777}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_SFXVolume
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1386225490
 GameObject:
   m_ObjectHideFlags: 0
@@ -13681,6 +13852,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1542929069}
   - component: {fileID: 1542929070}
+  - component: {fileID: 1542929071}
   m_Layer: 0
   m_Name: SenSlider
   m_TagString: Untagged
@@ -13775,6 +13947,35 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1542929071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1542929068}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_ControllerSen
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1555943402
 GameObject:
   m_ObjectHideFlags: 0
@@ -13785,6 +13986,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1555943403}
   - component: {fileID: 1555943404}
+  - component: {fileID: 1555943405}
   m_Layer: 0
   m_Name: InvertYToggle
   m_TagString: Untagged
@@ -13861,6 +14063,35 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 0
+--- !u!114 &1555943405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555943402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_InvertY
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1566578278
 GameObject:
   m_ObjectHideFlags: 0
@@ -13935,6 +14166,7 @@ GameObject:
   - component: {fileID: 1575708284}
   - component: {fileID: 1575708283}
   - component: {fileID: 1575708282}
+  - component: {fileID: 1575708285}
   m_Layer: 0
   m_Name: QualityDropdown
   m_TagString: Untagged
@@ -14082,6 +14314,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1575708280}
   m_CullTransparentMesh: 1
+--- !u!114 &1575708285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1575708280}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 4
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_Quality
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1586883767
 GameObject:
   m_ObjectHideFlags: 0
@@ -14677,6 +14938,439 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
   m_ShowMaskGraphic: 0
+--- !u!1 &1656454878
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1656454883}
+  - component: {fileID: 1656454882}
+  - component: {fileID: 1656454881}
+  - component: {fileID: 1656454880}
+  - component: {fileID: 1656454879}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1656454879
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656454878}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1656454880
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656454878}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.6
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!82 &1656454881
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656454878}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 0.04
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &1656454882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656454878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d090dac996372479c0eef370c8bd30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  musicSource: {fileID: 1656454881}
+  sfxSource: {fileID: 1656454880}
+  narratorSource: {fileID: 1656454879}
+  backgroundMusic: {fileID: 8300000, guid: 250a0de2f9c820a41912df66e4212d2e, type: 3}
+  diceRollSFX: {fileID: 8300000, guid: 7710daaa7155288449ea5f80c639d483, type: 3}
+  walkSFX: {fileID: 8300000, guid: 6abd6ab40f936044488130cb3419d30e, type: 3}
+  narr_Play: {fileID: 8300000, guid: 455ef3bb7b56cfe4cb15b94e4d19d906, type: 3}
+  narr_Quit: {fileID: 8300000, guid: d1af4f9e5b9d40f479dd66a5b6fcda74, type: 3}
+  narr_Settings: {fileID: 8300000, guid: 332908ea745b50d439c6b3442f1749c7, type: 3}
+  narr_ResumeGame: {fileID: 8300000, guid: fc56fd81a8634e4488ca151de5887e5a, type: 3}
+  narr_ReturnToMainMenu: {fileID: 8300000, guid: 95895cea6f0ad8e43adb78d617bd0460, type: 3}
+  narr_AudioSettings: {fileID: 8300000, guid: d80b0c318cc7c1240a4eea3727fa0d8d, type: 3}
+  narr_GeneralOptions: {fileID: 8300000, guid: b796fb962e61b0b48a275fa1a879b2f8, type: 3}
+  narr_Graphics: {fileID: 8300000, guid: c5dd3d9474e80e34d9845ffd419b3db2, type: 3}
+  narr_Controls: {fileID: 8300000, guid: aceb841b43429b44c8efeada68d96382, type: 3}
+  narr_ApplyButton: {fileID: 8300000, guid: a609f8f97622a87498599a5d427db7a8, type: 3}
+  narr_SFXVolume: {fileID: 8300000, guid: 1422dc7f2f5b00b4d89c457e2c30cb9e, type: 3}
+  narr_MusicVolume: {fileID: 8300000, guid: 0b0d120038da4614a99c95fb0c8f1473, type: 3}
+  narr_NarratorVolume: {fileID: 8300000, guid: 8fab02152448e14458a0876563327e21, type: 3}
+  narr_ControllerSensitivity: {fileID: 8300000, guid: 6239dbb284363bf4a8bc7b184c81bde5, type: 3}
+  narr_InvertY: {fileID: 8300000, guid: 5282e9bcbc3903c45a9ecf9ef68a1839, type: 3}
+  narr_Brightness: {fileID: 8300000, guid: a56d1ed1b20c8254796b3ce4daa4551b, type: 3}
+  narr_Fullscreen: {fileID: 8300000, guid: cb32f35b3a8a6d64e87e9c3803844cff, type: 3}
+  narr_Quality: {fileID: 8300000, guid: 1f03a36f44fdd23459e2811aaea0c1a3, type: 3}
+  narr_Resolution: {fileID: 8300000, guid: 266ede9a531aa0344b31d30db63e103f, type: 3}
+  narr_Dice:
+  - {fileID: 8300000, guid: 0395a2299462dce4bac8017d95d28460, type: 3}
+  - {fileID: 8300000, guid: 3f376651e9afe5b4cb5da1c6cd600609, type: 3}
+  - {fileID: 8300000, guid: 6323ac06bfaedf34dbfecbd975728f76, type: 3}
+  - {fileID: 8300000, guid: 13165db09c759994da52b49ea43686b8, type: 3}
+  - {fileID: 8300000, guid: 74ba20c8b75ce88408a7e20b68dce2de, type: 3}
+  - {fileID: 8300000, guid: 348cbb1e995097d4e8791961ff89023c, type: 3}
+  narr_P1Turn: {fileID: 8300000, guid: 5440bb43c1ffddb4fb08b6169df37cd3, type: 3}
+  narr_P2Turn: {fileID: 8300000, guid: 914e04cd90994ca47894448bd5102fe2, type: 3}
+  narr_BuyHouse: {fileID: 8300000, guid: a534ce1e1a24b4e45b8d76b2cbb9dae3, type: 3}
+  narr_Yes: {fileID: 8300000, guid: 860e0ad88226ae1409873c514462bcf6, type: 3}
+  narr_No: {fileID: 8300000, guid: 0164892cf7f4fd445b8ded9119340db7, type: 3}
+  narr_Properties:
+  - {fileID: 8300000, guid: 7cc632ff792c4f44f85e49050e453d24, type: 3}
+  - {fileID: 8300000, guid: e47a82c611daeed4ba99855ca2f9fee4, type: 3}
+  - {fileID: 8300000, guid: 7428088b78d8fa943831024eea57a189, type: 3}
+  - {fileID: 8300000, guid: aabc2f4d221b9394895b051eacdd6aea, type: 3}
+  - {fileID: 8300000, guid: 84f2bdbad595ece46a1dc2c8d51343d7, type: 3}
+  - {fileID: 8300000, guid: 91a27c4c1d76ccc43bef5a9b7673fc04, type: 3}
+  - {fileID: 8300000, guid: bc5035a8374152241bf338eca78908a4, type: 3}
+  - {fileID: 8300000, guid: bdad15be89545a5459d9b272fd87f03e, type: 3}
+  - {fileID: 8300000, guid: 9567e5c49a3245446af44d0ec94c3e2c, type: 3}
+  - {fileID: 8300000, guid: c22c9b109e1ce5a47a53611e5a5ae3c4, type: 3}
+  - {fileID: 8300000, guid: a31c7fd12df86634385b8e98b09c7aa8, type: 3}
+  - {fileID: 8300000, guid: 97c23b8d6f867c64e81e2256c03c9aef, type: 3}
+  - {fileID: 8300000, guid: 0579296195cfb2541b0e532a38fe56dc, type: 3}
+  - {fileID: 8300000, guid: 76ccd37c3831d96439db1e960a1478fa, type: 3}
+  - {fileID: 8300000, guid: 9972f999f05335849902e0f07b5f428b, type: 3}
+  - {fileID: 8300000, guid: ca755316453fe0f4bb9f175bd9656e40, type: 3}
+  - {fileID: 8300000, guid: 0460e76a837ec794991907ff8dc4e2cf, type: 3}
+  - {fileID: 8300000, guid: f48b69f22ed8ad7478977cbd49bee665, type: 3}
+  - {fileID: 8300000, guid: 7bca0b7205650e940aebab0a76f9a528, type: 3}
+  - {fileID: 8300000, guid: 534b01a31a64d2a48ad33827e077cf29, type: 3}
+  - {fileID: 8300000, guid: d6e47e369732b8d469c5a54d0fad97cd, type: 3}
+  - {fileID: 8300000, guid: 77b5515ef66551543bb182fc4121f58e, type: 3}
+  - {fileID: 8300000, guid: 04744fa6468b95f448cec53e570e9c18, type: 3}
+  - {fileID: 8300000, guid: 5cbfa7d6b012c3a4383ec5617465513d, type: 3}
+  - {fileID: 8300000, guid: b6035aeb2eb57bd4ab3dabfee0ec4b5c, type: 3}
+  - {fileID: 8300000, guid: 09717a52d062b494eba4d8786f833975, type: 3}
+  - {fileID: 8300000, guid: 969e740496f4912478dedfec3a11fa47, type: 3}
+  - {fileID: 8300000, guid: 4f716629a2682c24b9be9e406caeb96d, type: 3}
+  narr_HaveHouse:
+  - {fileID: 8300000, guid: c12f3cd1972668942bda0d546eb05f25, type: 3}
+  - {fileID: 8300000, guid: 7c68cdb4ceb235447a3eea33d269d973, type: 3}
+  - {fileID: 8300000, guid: 801985fd43e279945969eb5777a60955, type: 3}
+  - {fileID: 8300000, guid: 07b96dd88e81ce74f853897de1e6f420, type: 3}
+  - {fileID: 8300000, guid: d4c9eeb4b1122644a8e30e395002bad4, type: 3}
+  - {fileID: 8300000, guid: 79e0164b2c80f974d91573247fc5423b, type: 3}
+  - {fileID: 8300000, guid: 207234f258deadf4bbfd58f0b4659176, type: 3}
+  - {fileID: 8300000, guid: 32386143a8c6bf0439fa8e52fe74cf36, type: 3}
+  - {fileID: 8300000, guid: 0c34cfc3e7777cd489bdf71f78464309, type: 3}
+  - {fileID: 8300000, guid: 185ba694489d269488b96e3a1bcfb0ee, type: 3}
+  - {fileID: 8300000, guid: 920f2f3d963e428409c77c3901c6c713, type: 3}
+  - {fileID: 8300000, guid: c6b55e1818a7a884ab303e5c2c60ed0a, type: 3}
+  - {fileID: 8300000, guid: b8ca8b887ab63c7408bad7b878d3b3b6, type: 3}
+  - {fileID: 8300000, guid: 4eb0397148f9b6a4197ad1f154109907, type: 3}
+  - {fileID: 8300000, guid: 22662edb75ba4834d9b4dc2b865abd28, type: 3}
+  - {fileID: 8300000, guid: 2ee4377e0ade93e4d927adaf046cbcc9, type: 3}
+  - {fileID: 8300000, guid: 69f6109d532cfdb4cb1d5168e12b183d, type: 3}
+  - {fileID: 8300000, guid: 0d6b8deff1ad62940b72138aaf374a82, type: 3}
+  - {fileID: 8300000, guid: 5e8b9307067ce6544bce0a4ddc102d66, type: 3}
+  - {fileID: 8300000, guid: caaf5f997eda3834284fae12585be7dc, type: 3}
+  - {fileID: 8300000, guid: 708feead4675a01429b11e1d16294f93, type: 3}
+  - {fileID: 8300000, guid: 9ebf9464086e8854a89058d96ff7b4bb, type: 3}
+  - {fileID: 8300000, guid: 88b7b052909ca454c82b8d7e41512c78, type: 3}
+  - {fileID: 8300000, guid: a3ba374ef2762ee45afd4c540f209113, type: 3}
+  - {fileID: 8300000, guid: 35d804178dd620e4795b67375b4e4559, type: 3}
+  - {fileID: 8300000, guid: d6a0cedcc28682c43bc5d252c356e6bc, type: 3}
+  - {fileID: 8300000, guid: 0f797120b8b939747bad5fcc2d179ca4, type: 3}
+  - {fileID: 8300000, guid: 5bf74a30724c982419bbc27d0e05d86c, type: 3}
+--- !u!4 &1656454883
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656454878}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.20627, y: 3.19, z: 0.62849}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1687348054
 GameObject:
   m_ObjectHideFlags: 0
@@ -15088,7 +15782,7 @@ MonoBehaviour:
   _musicSlider: {fileID: 159304807}
   _NarratorTextValue: {fileID: 81569993}
   _NarratorSlider: {fileID: 399980961}
-  SoundManager: {fileID: 1345783853}
+  SoundManager: {fileID: 0}
   ControllerSenTextValue: {fileID: 1804777633}
   ControllerSenSlider: {fileID: 1542929070}
   InvertYToggle: {fileID: 1555943404}
@@ -15176,6 +15870,7 @@ GameObject:
   - component: {fileID: 1735558939}
   - component: {fileID: 1735558938}
   - component: {fileID: 1735558937}
+  - component: {fileID: 1735558940}
   m_Layer: 0
   m_Name: QuitBtn
   m_TagString: Untagged
@@ -15358,6 +16053,35 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1735558935}
   m_CullTransparentMesh: 1
+--- !u!114 &1735558940
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1735558935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1720834116}
+          m_TargetAssemblyTypeName: MenuController, Assembly-CSharp
+          m_MethodName: Narrate_Quit
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1750977778
 GameObject:
   m_ObjectHideFlags: 0
@@ -18609,5 +19333,5 @@ SceneRoots:
   - {fileID: 2113191914}
   - {fileID: 108894943}
   - {fileID: 1720834115}
-  - {fileID: 1345783854}
+  - {fileID: 1656454883}
   - {fileID: 495912548}
