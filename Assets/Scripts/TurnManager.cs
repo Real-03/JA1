@@ -68,6 +68,8 @@ public class TurnManager : MonoBehaviour
 
     void Start()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         p1.money = startingMoney;
         p2.money = startingMoney;
         ui.UpdateMoneyUI(p1.money, p2.money);
