@@ -63,6 +63,8 @@ public class SoundManager : MonoBehaviour
     [Header("Narrator - Owned Properties")]
     public AudioClip[] narr_HaveHouse;
 
+    private AudioClip _lastNarratorClip;
+
     void Awake()
     {
         if (Instance == null)
@@ -79,6 +81,16 @@ public class SoundManager : MonoBehaviour
     void Start()
     {
         PlayMusic();
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R) && _lastNarratorClip != null)
+        {
+            narratorSource.Stop();
+            narratorSource.clip = _lastNarratorClip;
+            narratorSource.Play();
+        }
     }
 
     public void PlayMusic()
@@ -110,6 +122,7 @@ public class SoundManager : MonoBehaviour
     public void PlayNarrator(AudioClip clip)
     {
         if (clip == null) return;
+        _lastNarratorClip = clip;
         narratorSource.Stop();
         narratorSource.clip = clip;
         narratorSource.Play();

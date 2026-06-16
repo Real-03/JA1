@@ -5850,7 +5850,10 @@ MonoBehaviour:
     house - C
 
 
-    Narrate owned houses - V'
+    Narrate owned houses - V
+
+
+    Repeat last audio - R'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 56a6fd95ee5f0914ba0b748360923320, type: 2}
   m_sharedMaterial: {fileID: 8467724400268315302, guid: 56a6fd95ee5f0914ba0b748360923320, type: 2}

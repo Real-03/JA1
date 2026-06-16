@@ -8,8 +8,8 @@ using TMPro;
 public class TurnManager : MonoBehaviour
 {
     [Header("Players")]
-    public Player p1;
-    public Player p2;
+    public PlayerController p1;
+    public PlayerController p2;
 
     [Header("Player Colors")]
     public Color p1Color = Color.red;
@@ -99,7 +99,7 @@ public class TurnManager : MonoBehaviour
     IEnumerator AnnounceCurrentPosition()
     {
         isAnnouncingPosition = true;
-        Player activePlayer = isP1Turn ? p1 : p2;
+        PlayerController activePlayer = isP1Turn ? p1 : p2;
         int tileIdx = GetCanonicalIndex(activePlayer.currentPosition);
 
         if (tileIndexToPropertyIndex.TryGetValue(tileIdx, out int propIdx))
@@ -153,7 +153,7 @@ public class TurnManager : MonoBehaviour
         SoundManager.Instance.PlayDiceNarrator(diceValue);
         ui.dicePanel.SetActive(false);
 
-        Player activePlayer = isP1Turn ? p1 : p2;
+        PlayerController activePlayer = isP1Turn ? p1 : p2;
         int posBefore = activePlayer.currentPosition;
 
         yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
@@ -183,7 +183,7 @@ public class TurnManager : MonoBehaviour
         isWaitingInput = false;
     }
 
-    IEnumerator MovePlayer(Player player, int steps)
+    IEnumerator MovePlayer(PlayerController player, int steps)
     {
         for (int i = 0; i < steps; i++)
         {
@@ -199,8 +199,8 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator CheckTileLogic()
     {
-        Player currentPlayer = isP1Turn ? p1 : p2;
-        Player opponent = isP1Turn ? p2 : p1;
+        PlayerController currentPlayer = isP1Turn ? p1 : p2;
+        PlayerController opponent = isP1Turn ? p2 : p1;
         int tileIdx = GetCanonicalIndex(currentPlayer.currentPosition);
 
         if (whiteTiles.Contains(tileIdx)) yield break;
@@ -298,7 +298,7 @@ public class TurnManager : MonoBehaviour
 
     void UpdatePlayerVisualPosition()
     {
-        void PositionPlayer(Player p, string pointName, float rotZ)
+        void PositionPlayer(PlayerController p, string pointName, float rotZ)
         {
             int visIdx = GetCanonicalIndex(p.currentPosition);
             Transform slot = tiles[visIdx].Find(pointName);

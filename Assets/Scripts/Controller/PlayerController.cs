@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class Player : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
     public string name;
     public Transform transform;
