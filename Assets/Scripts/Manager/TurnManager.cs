@@ -172,6 +172,11 @@ public class TurnManager : MonoBehaviour
 
         yield return StartCoroutine(CheckTileLogic());
 
+        ui.UpdateMoneyUI(p1.money, p2.money);
+
+        if (CheckGameOver())
+            yield break;
+
         SwitchCamera(false);
         isP1Turn = !isP1Turn;
 
@@ -181,6 +186,31 @@ public class TurnManager : MonoBehaviour
 
         isProcessingTurn = false;
         isWaitingInput = false;
+    }
+
+    bool CheckGameOver()
+    {
+        if (p1.money < 0)
+        {
+            TriggerGameOver("Player 2");
+            return true;
+        }
+        if (p2.money < 0)
+        {
+            TriggerGameOver("Player 1");
+            return true;
+        }
+        return false;
+    }
+
+    void TriggerGameOver(string winnerName)
+    {
+        SwitchCamera(false);
+        isProcessingTurn = true;
+        isWaitingInput = true;
+        ui.ShowGameOver(winnerName);
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     IEnumerator MovePlayer(PlayerController player, int steps)

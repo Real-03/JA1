@@ -18,6 +18,10 @@ public class UIManager : MonoBehaviour
     public TMP_Text moneyTextP1;
     public TMP_Text moneyTextP2;
 
+    [Header("Game Over UI")]
+    public GameObject gameOverPanel;
+    public TMP_Text gameOverText;
+
     public void UpdateMoneyUI(int p1Money, int p2Money)
     {
         moneyTextP1.text = $"P1: {p1Money}€";
@@ -28,5 +32,11 @@ public class UIManager : MonoBehaviour
     {
         dicePanel.SetActive(true);
         diceText.text = $"Dice roll: {value}";
+    }
+
+    public void ShowGameOver(string winnerName)
+    {
+        gameOverPanel.SetActive(true);
+        gameOverText.text = $"{winnerName} wins!";
     }
 }
