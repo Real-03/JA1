@@ -19,15 +19,25 @@ public class PauseMenuController : MonoBehaviour
     private int _currentIndex = 0;
     private bool _blockInputThisFrame = false;
     private StandaloneInputModule _inputModule;
+    private InputAction _pauseAction;
 
     void Start()
     {
-        _inputModule = EventSystem.current.GetComponent<StandaloneInputModule>();
+        if (EventSystem.current != null)
+            _inputModule = EventSystem.current.GetComponent<StandaloneInputModule>();
+
+        _pauseAction = InputSystem.actions != null ? InputSystem.actions.FindAction("PauseMenu") : null;
+        if (_pauseAction == null)
+        {
+            Debug.LogError("PauseMenuController: a ação 'PauseMenu' não existe no InputSystem_Actions. Pausa desativada.");
+            return;
+        }
+        if (!_pauseAction.enabled) _pauseAction.Enable();
     }
 
     void Update()
     {
-        if (InputSystem.actions["PauseMenu"].WasPressedThisDynamicUpdate())
+        if (_pauseAction != null && _pauseAction.WasPressedThisDynamicUpdate())
         {
             if (_isPaused) ResumeGame();
             else PauseGame();
