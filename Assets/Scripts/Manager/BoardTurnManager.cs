@@ -6,11 +6,6 @@ using System.Linq;
 using System.Text;
 using TMPro;
 
-// Tabuleiro "Board 1" (32 casas, 4 lados de 8 casas).
-// Em cada lado: canto (1, 9, 17, 25) | propriedade | propriedade | propriedade | casa da sorte (5, 13, 21, 29) | propriedade x3
-// Canto e casa da sorte não são compráveis. As restantes são propriedades.
-// Casa comprada começa só com HouseBase; depois pode ativar até 2 upgrades.
-// Controlo: Espaço = lançar dado, C = posição, V = propriedades, setas = escolher, Enter/Espaço = confirmar, 1-4 = upgrades.
 public class BoardTurnManager : MonoBehaviour
 {
     [Header("Players")]
@@ -21,46 +16,48 @@ public class BoardTurnManager : MonoBehaviour
     public Color p1Color = Color.red;
     public Color p2Color = Color.blue;
 
-    [Header("Posição do peão na casa (fica na borda, nunca por cima da casa)")]
-    [Tooltip("Distância ao centro da casa, para o lado de fora do tabuleiro.")]
-    public float edgeDistance = 0.35f;
-    [Tooltip("Desvio lateral: separa os dois jogadores.")]
-    public float lateralOffset = 0.2f;
-    [Tooltip("Altura acima do tabuleiro.")]
-    public float standHeight = 0.5f;
+    [Header("Posição do peão na casa")]
+    public float edgeFraction = 0.5f;
+    public float lateralFraction = 0.3f;
 
     [Header("Movimento (salto)")]
-    [Tooltip("Tempo que o peão demora a saltar de uma casa para a seguinte.")]
     public float hopDuration = 0.25f;
-    [Tooltip("Altura máxima do salto.")]
     public float hopHeight = 0.4f;
+
+    [Header("Dados")]
+    public float diceRestTime = 2f;
+    public float diceMaxRollTime = 8f;
+    public Transform diceSurface;
 
     [Header("Cameras")]
     public Camera mainCamera;
 
     [Header("References")]
     public UIManager ui;
-    [Tooltip("Pai das casas 1..32. Se ficar vazio, procura um objeto chamado 'Board 1'.")]
     public Transform boardRoot;
-    [Tooltip("Casa de referência (objeto 'House' da cena). Se ficar vazio, procura um objeto chamado 'House'. Fica escondida ao iniciar e serve de modelo para as casas compradas.")]
     public Transform houseTemplate;
+    public Transform diceTemplate;
 
     [Header("Game Settings")]
     public int startingMoney = 1500;
     public int lapBonus = 200;
     public int housePrice = 300;
     public int houseRent = 150;
-    [Tooltip("Custo de cada upgrade escolhido na compra.")]
     public int upgradePrice = 100;
     public int maxUpgradesPerHouse = 2;
 
-    // Nomes dos filhos do modelo da casa (House.fbx)
     private static readonly string[] UpgradeNames = { "HouseAutism", "HouseBlind", "HouseDef", "HouseMobility" };
     private static readonly string[] UpgradeLabels = { "Autism", "Blind", "Def", "Mobility" };
     private static readonly Key[] UpgradeKeys = { Key.Digit1, Key.Digit2, Key.Digit3, Key.Digit4 };
     private static readonly Key[] UpgradeNumpadKeys = { Key.Numpad1, Key.Numpad2, Key.Numpad3, Key.Numpad4 };
     private const string BaseName = "HouseBase";
     private const int TilesPerSide = 8;
+
+    private const int DiceCount = 2;
+    private const float SpawnHeightInDice = 3f;
+    private const float ThrowSpeedInDice = 2f;
+    private const float RestLinearInDice = 0.05f;
+    private const float RestAngularSpeed = 0.2f;
 
     private Transform[] tiles;
     private int[] owners;
@@ -74,11 +71,23 @@ public class BoardTurnManager : MonoBehaviour
     private readonly Dictionary<int, GameObject> spawnedHouses = new Dictionary<int, GameObject>();
     private readonly Dictionary<int, bool[]> houseUpgrades = new Dictionary<int, bool[]>();
 
-    // Pose da casa relativa à casa de referência (calculada uma vez, ao iniciar)
     private Matrix4x4 referenceToHouse;
     private Vector3 houseScale = Vector3.one;
     private Vector3 boardCenter;
+    private Vector3 boardMin;
+    private Vector3 boardMax;
     private bool templateReady = false;
+
+    private Vector3[] tileCenters;
+    private Vector3[] tileExtents;
+    private float[] tileTops;
+    private float p1FeetOffset;
+    private float p2FeetOffset;
+
+    private Rigidbody[] diceBodies;
+    private Transform[][] diceFaces;
+    private float diceSize = 0f;
+    private float surfaceY;
 
     void Awake()
     {
@@ -114,6 +123,9 @@ public class BoardTurnManager : MonoBehaviour
         }
 
         CaptureHouseTemplate();
+        ComputeBoardBounds();
+        MeasureFeetOffsets();
+        SetupDice();
     }
 
     void Start()
@@ -126,6 +138,9 @@ public class BoardTurnManager : MonoBehaviour
         p1.money = startingMoney;
         p2.money = startingMoney;
         ui.UpdateMoneyUI(p1.money, p2.money);
+
+        if (ui.dicePanel != null)
+            ui.dicePanel.SetActive(false);
 
         UpdatePlayerVisualPosition();
         SwitchCamera(false);
@@ -154,12 +169,11 @@ public class BoardTurnManager : MonoBehaviour
             StartCoroutine(AnnounceOwnedProperties());
     }
 
-    // ---------- Regras das casas ----------
 
     static bool IsPropertyIndex(int index)
     {
         int posInSide = index % TilesPerSide;
-        return posInSide != 0 && posInSide != 4; // 0 = canto, 4 = casa da sorte
+        return posInSide != 0 && posInSide != 4;
     }
 
     IEnumerator AnnounceCurrentPosition()
@@ -195,39 +209,45 @@ public class BoardTurnManager : MonoBehaviour
         isAnnouncingProperties = false;
     }
 
-    // ---------- Turno ----------
 
     void StartTurn()
     {
+        if (diceBodies == null || diceBodies.Length != DiceCount)
+        {
+            Debug.LogError("BoardTurnManager: os dados não estão prontos, não é possível lançar.");
+            return;
+        }
+
         SoundManager.Instance.PlayDiceRoll();
-        int diceValue = Random.Range(1, 7);
-        SwitchCamera(true);
-        StartCoroutine(TurnFlow(diceValue));
+        StartCoroutine(TurnFlow());
     }
 
-    IEnumerator TurnFlow(int diceValue)
+    IEnumerator TurnFlow()
     {
         isWaitingInput = true;
         isProcessingTurn = true;
 
-        ui.ShowDice(diceValue);
-
-        yield return new WaitForSeconds(1.5f);
+        int[] faces = null;
+        yield return StartCoroutine(ThrowDice(result => faces = result));
         SoundManager.Instance.sfxSource.Stop();
-        SoundManager.Instance.PlayDiceNarrator(diceValue);
-        ui.dicePanel.SetActive(false);
+
+        int diceValue = faces[0] + faces[1];
 
         PlayerController activePlayer = isP1Turn ? p1 : p2;
         int posBefore = activePlayer.currentPosition;
-        Debug.Log($"BoardTurnManager: {(isP1Turn ? "P1" : "P2")} tirou {diceValue}, da casa {posBefore + 1} para a casa {(posBefore + diceValue) % tiles.Length + 1}.");
+        Debug.Log($"BoardTurnManager: {(isP1Turn ? "P1" : "P2")} tirou {faces[0]} + {faces[1]} = {diceValue}, da casa {posBefore + 1} para a casa {(posBefore + diceValue) % tiles.Length + 1}.");
 
-        yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
+        foreach (int face in faces)
+        {
+            SoundManager.Instance.PlayDiceNarrator(face);
+            yield return new WaitUntil(() => !SoundManager.Instance.narratorSource.isPlaying);
+        }
 
+        SwitchCamera(true);
         yield return StartCoroutine(MovePlayer(activePlayer, diceValue));
 
         SoundManager.Instance.sfxSource.Stop();
 
-        // Ao dar a volta ao tabuleiro a posição desce (passou pela casa 1)
         if (activePlayer.currentPosition < posBefore)
         {
             activePlayer.AddMoney(lapBonus);
@@ -267,7 +287,6 @@ public class BoardTurnManager : MonoBehaviour
 
             SoundManager.Instance.PlayWalk();
 
-            // Salto: avança em linha reta e ao mesmo tempo sobe e desce num arco
             float elapsed = 0f;
             while (elapsed < hopDuration)
             {
@@ -289,7 +308,6 @@ public class BoardTurnManager : MonoBehaviour
         PlayerController opponent = isP1Turn ? p2 : p1;
         int tileIdx = currentPlayer.currentPosition;
 
-        // Canto e casa da sorte: sem ação por agora
         if (!IsPropertyIndex(tileIdx))
             yield break;
 
@@ -379,7 +397,6 @@ public class BoardTurnManager : MonoBehaviour
         }
     }
 
-    // Escolha de upgrades (0 a maxUpgradesPerHouse). Ativa/desativa os filhos da casa em tempo real.
     IEnumerator ChooseUpgrades(PlayerController buyer, int tileIdx, GameObject house)
     {
         bool[] chosen = new bool[UpgradeNames.Length];
@@ -390,7 +407,6 @@ public class BoardTurnManager : MonoBehaviour
         ui.housePanel.SetActive(true);
         ShowUpgradePrompt(chosen, count);
 
-        // Espera um frame para que a tecla que confirmou a compra não conte aqui
         yield return null;
 
         while (!ConfirmPressed())
@@ -456,7 +472,6 @@ public class BoardTurnManager : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
-    // ---------- Texto da UI ----------
 
     void ShowBuyPrompt(int price, bool buyFocused)
     {
@@ -482,10 +497,343 @@ public class BoardTurnManager : MonoBehaviour
         return kb != null && (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame || kb.spaceKey.wasPressedThisFrame);
     }
 
-    // ---------- Casas no tabuleiro ----------
 
-    // Guarda a pose da casa de referência em relação à casa 27.
-    // Cada casa comprada usa a mesma pose relativa à sua própria casa (posição e rotação seguem a casa).
+    void SetupDice()
+    {
+        if (diceTemplate == null)
+        {
+            GameObject go = GameObject.Find("Dice");
+            if (go != null) diceTemplate = go.transform;
+        }
+
+        if (diceTemplate == null)
+        {
+            Debug.LogError("BoardTurnManager: modelo do dado 'Dice' não encontrado.");
+            return;
+        }
+
+        diceBodies = new Rigidbody[DiceCount];
+        diceFaces = new Transform[DiceCount][];
+
+        for (int i = 0; i < DiceCount; i++)
+        {
+            GameObject die = Instantiate(diceTemplate.gameObject);
+            die.name = $"Dice_{i + 1}";
+            die.SetActive(true);
+
+            diceBodies[i] = PrepareDie(die.transform);
+            diceFaces[i] = FindFaces(die.transform);
+        }
+
+        diceTemplate.gameObject.SetActive(false);
+
+        surfaceY = FindSurfaceHeight();
+        CreateDiceFloor();
+    }
+
+    float FindSurfaceHeight()
+    {
+        if (diceSurface == null)
+        {
+            diceSurface = boardRoot.Find("Middle");
+            if (diceSurface == null) diceSurface = boardRoot.Find("Base");
+        }
+
+        if (diceSurface == null)
+        {
+            Debug.LogWarning("BoardTurnManager: não encontrei 'Middle' nem 'Base' no tabuleiro; os dados caem à altura do topo das casas.");
+            return boardMax.y;
+        }
+
+        float y = diceSurface.position.y;
+        Renderer[] renderers = diceSurface.GetComponentsInChildren<Renderer>();
+        if (renderers.Length > 0)
+        {
+            y = float.NegativeInfinity;
+            foreach (Renderer r in renderers)
+                y = Mathf.Max(y, r.bounds.max.y);
+        }
+
+        Debug.Log($"BoardTurnManager: superfície dos dados em '{diceSurface.name}', altura {y}.");
+        return y;
+    }
+
+    Rigidbody PrepareDie(Transform die)
+    {
+        LocalBounds(die, out Vector3 min, out Vector3 max);
+
+        BoxCollider box = die.GetComponent<BoxCollider>();
+        if (box == null) box = die.gameObject.AddComponent<BoxCollider>();
+        box.center = (min + max) * 0.5f;
+        box.size = max - min;
+
+        Rigidbody rb = die.GetComponent<Rigidbody>();
+        if (rb == null) rb = die.gameObject.AddComponent<Rigidbody>();
+        rb.mass = 1f;
+        rb.maxAngularVelocity = 50f;
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.isKinematic = true;
+
+        Vector3 worldSize = Vector3.Scale(box.size, die.lossyScale);
+        diceSize = Mathf.Max(diceSize, Mathf.Max(worldSize.x, Mathf.Max(worldSize.y, worldSize.z)));
+
+        return rb;
+    }
+
+    static void LocalBounds(Transform root, out Vector3 min, out Vector3 max)
+    {
+        min = Vector3.positiveInfinity;
+        max = Vector3.negativeInfinity;
+
+        foreach (MeshFilter mf in root.GetComponentsInChildren<MeshFilter>())
+        {
+            if (mf.sharedMesh == null) continue;
+
+            Bounds mb = mf.sharedMesh.bounds;
+            for (int c = 0; c < 8; c++)
+            {
+                Vector3 corner = new Vector3(
+                    (c & 1) != 0 ? mb.max.x : mb.min.x,
+                    (c & 2) != 0 ? mb.max.y : mb.min.y,
+                    (c & 4) != 0 ? mb.max.z : mb.min.z);
+
+                Vector3 p = root.InverseTransformPoint(mf.transform.TransformPoint(corner));
+                min = Vector3.Min(min, p);
+                max = Vector3.Max(max, p);
+            }
+        }
+
+        if (min.x > max.x)
+        {
+            Debug.LogError($"BoardTurnManager: o dado '{root.name}' não tem malhas.");
+            min = max = Vector3.zero;
+        }
+    }
+
+    static Transform[] FindFaces(Transform die)
+    {
+        Transform[] faces = new Transform[6];
+
+        foreach (Transform t in die.GetComponentsInChildren<Transform>())
+        {
+            if (t == die) continue;
+
+            for (int f = 0; f < faces.Length; f++)
+            {
+                if (faces[f] == null && t.name == (f + 1).ToString())
+                    faces[f] = t;
+            }
+        }
+
+        for (int f = 0; f < faces.Length; f++)
+        {
+            if (faces[f] == null)
+                Debug.LogError($"BoardTurnManager: falta a face {f + 1} no dado '{die.name}'.");
+        }
+
+        return faces;
+    }
+
+    void ComputeBoardBounds()
+    {
+        boardMin = Vector3.positiveInfinity;
+        boardMax = Vector3.negativeInfinity;
+
+        tileCenters = new Vector3[tiles.Length];
+        tileExtents = new Vector3[tiles.Length];
+        tileTops = new float[tiles.Length];
+
+        for (int i = 0; i < tiles.Length; i++)
+        {
+            Vector3 min = Vector3.positiveInfinity;
+            Vector3 max = Vector3.negativeInfinity;
+
+            Renderer[] renderers = tiles[i].GetComponentsInChildren<Renderer>();
+            if (renderers.Length == 0)
+            {
+                min = tiles[i].position;
+                max = tiles[i].position;
+            }
+
+            foreach (Renderer r in renderers)
+            {
+                min = Vector3.Min(min, r.bounds.min);
+                max = Vector3.Max(max, r.bounds.max);
+            }
+
+            tileCenters[i] = (min + max) * 0.5f;
+            tileExtents[i] = (max - min) * 0.5f;
+            tileTops[i] = max.y;
+
+            boardMin = Vector3.Min(boardMin, min);
+            boardMax = Vector3.Max(boardMax, max);
+        }
+    }
+
+    void MeasureFeetOffsets()
+    {
+        p1FeetOffset = FeetOffset(p1);
+        p2FeetOffset = FeetOffset(p2);
+    }
+
+    static float FeetOffset(PlayerController player)
+    {
+        if (player == null) return 0f;
+
+        Transform t = player.gameObject.transform;
+        Renderer[] renderers = t.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0) return 0f;
+
+        float lowest = float.PositiveInfinity;
+        foreach (Renderer r in renderers)
+            lowest = Mathf.Min(lowest, r.bounds.min.y);
+
+        return t.position.y - lowest;
+    }
+
+    void CreateDiceFloor()
+    {
+        float margin = diceSize * 2f;
+        Vector3 center = (boardMin + boardMax) * 0.5f;
+        Vector3 size = (boardMax - boardMin) + new Vector3(margin * 2f, 0f, margin * 2f);
+
+        GameObject floor = new GameObject("DiceFloor");
+        floor.transform.position = new Vector3(center.x, surfaceY - 0.5f, center.z);
+
+        BoxCollider col = floor.AddComponent<BoxCollider>();
+        col.size = new Vector3(size.x, 1f, size.z);
+    }
+
+    IEnumerator ThrowDice(System.Action<int[]> onDone)
+    {
+        for (int i = 0; i < DiceCount; i++)
+            LaunchDie(i);
+
+        float elapsed = 0f;
+        float restingTime = 0f;
+        bool timedOut = false;
+
+        while (true)
+        {
+            yield return null;
+            elapsed += Time.deltaTime;
+
+            bool allResting = true;
+            for (int i = 0; i < DiceCount; i++)
+            {
+                Rigidbody rb = diceBodies[i];
+
+                if (IsOutOfBoard(rb.position))
+                {
+                    Debug.Log($"BoardTurnManager: {rb.name} saiu do tabuleiro, é lançado de novo.");
+                    LaunchDie(i);
+                    allResting = false;
+                }
+                else if (!IsResting(rb))
+                {
+                    allResting = false;
+                }
+            }
+
+            restingTime = allResting ? restingTime + Time.deltaTime : 0f;
+
+            if (restingTime >= diceRestTime)
+                break;
+
+            if (elapsed >= diceMaxRollTime)
+            {
+                timedOut = true;
+                break;
+            }
+        }
+
+        if (timedOut)
+            Debug.LogWarning("BoardTurnManager: os dados não pararam a tempo, conta as faces que estão para cima.");
+
+        int[] faces = new int[DiceCount];
+        for (int i = 0; i < DiceCount; i++)
+            faces[i] = ReadTopFace(i);
+
+        onDone(faces);
+    }
+
+    void LaunchDie(int i)
+    {
+        Rigidbody rb = diceBodies[i];
+
+        Vector3 offset = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)) * diceSize;
+        Vector3 spawn = new Vector3(boardCenter.x, surfaceY + diceSize * SpawnHeightInDice, boardCenter.z) + offset;
+
+        rb.isKinematic = false;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.position = spawn;
+        rb.rotation = Random.rotation;
+        rb.transform.SetPositionAndRotation(rb.position, rb.rotation);
+        Physics.SyncTransforms();
+        rb.WakeUp();
+
+        Vector3 horizontal = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+        rb.linearVelocity = horizontal * (diceSize * ThrowSpeedInDice) + Vector3.up * diceSize;
+        rb.angularVelocity = Random.insideUnitSphere * 20f;
+    }
+
+    bool IsResting(Rigidbody rb)
+    {
+        float linearLimit = diceSize * RestLinearInDice;
+        return rb.linearVelocity.sqrMagnitude < linearLimit * linearLimit
+            && rb.angularVelocity.sqrMagnitude < RestAngularSpeed * RestAngularSpeed;
+    }
+
+    bool IsOutOfBoard(Vector3 p)
+    {
+        float margin = diceSize * 2f;
+        return p.x < boardMin.x - margin || p.x > boardMax.x + margin
+            || p.z < boardMin.z - margin || p.z > boardMax.z + margin
+            || p.y < surfaceY - margin;
+    }
+
+    int ReadTopFace(int dieIndex)
+    {
+        Transform[] faces = diceFaces[dieIndex];
+
+        Vector3[] centers = new Vector3[faces.Length];
+        Vector3 average = Vector3.zero;
+        for (int f = 0; f < faces.Length; f++)
+        {
+            centers[f] = faces[f] != null ? FaceCenter(faces[f]) : diceBodies[dieIndex].position;
+            average += centers[f];
+        }
+        average /= faces.Length;
+
+        int top = 1;
+        float best = float.NegativeInfinity;
+        for (int f = 0; f < faces.Length; f++)
+        {
+            if (faces[f] == null) continue;
+
+            float dot = Vector3.Dot((centers[f] - average).normalized, Vector3.up);
+            if (dot > best)
+            {
+                best = dot;
+                top = f + 1;
+            }
+        }
+
+        return top;
+    }
+
+    static Vector3 FaceCenter(Transform face)
+    {
+        Renderer[] renderers = face.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0) return face.position;
+
+        Vector3 sum = Vector3.zero;
+        foreach (Renderer r in renderers) sum += r.bounds.center;
+        return sum / renderers.Length;
+    }
+
+
     void CaptureHouseTemplate()
     {
         if (houseTemplate == null)
@@ -500,7 +848,6 @@ public class BoardTurnManager : MonoBehaviour
             return;
         }
 
-        // A casa de referência é a casa do tabuleiro mais próxima dela (não depende do número/nome)
         int refIdx = FindNearestTile(houseTemplate.position);
         Debug.Log($"BoardTurnManager: casa de referência está na casa {refIdx + 1}.");
 
@@ -508,7 +855,6 @@ public class BoardTurnManager : MonoBehaviour
         houseScale = houseTemplate.lossyScale;
         templateReady = true;
 
-        // O modelo de referência só serve de guia; as casas aparecem quando são compradas
         houseTemplate.gameObject.SetActive(false);
     }
 
@@ -581,7 +927,6 @@ public class BoardTurnManager : MonoBehaviour
             r.material.color = color;
     }
 
-    // ---------- Jogadores e câmaras ----------
 
     void UpdatePlayerVisualPosition()
     {
@@ -596,20 +941,23 @@ public class BoardTurnManager : MonoBehaviour
         player.gameObject.transform.position = StandingPosition(player.currentPosition, player);
     }
 
-    // Posição onde o peão fica numa casa: no lado de fora da casa, longe do centro,
-    // para nunca ficar por cima da casa (onde pode estar uma casa comprada).
     Vector3 StandingPosition(int tileIdx, PlayerController player)
     {
-        Transform tile = tiles[tileIdx];
+        Vector3 center = tileCenters[tileIdx];
+        Vector3 extents = tileExtents[tileIdx];
 
-        Vector3 outward = tile.position - boardCenter;
-        outward.y = 0f;
+        Vector3 outward = new Vector3(center.x - boardCenter.x, 0f, center.z - boardCenter.z);
         outward = outward.sqrMagnitude > 0.0001f ? outward.normalized : Vector3.forward;
-
         Vector3 side = Vector3.Cross(Vector3.up, outward).normalized;
-        float lateral = player == p1 ? -lateralOffset : lateralOffset;
 
-        return tile.position + outward * edgeDistance + side * lateral + Vector3.up * standHeight;
+        float reachOut = Mathf.Abs(outward.x) * extents.x + Mathf.Abs(outward.z) * extents.z;
+        float reachSide = Mathf.Abs(side.x) * extents.x + Mathf.Abs(side.z) * extents.z;
+        float lateral = (player == p1 ? -1f : 1f) * lateralFraction * reachSide;
+
+        Vector3 xz = new Vector3(center.x, 0f, center.z) + outward * (reachOut * edgeFraction) + side * lateral;
+        float feet = player == p1 ? p1FeetOffset : p2FeetOffset;
+
+        return new Vector3(xz.x, tileTops[tileIdx] + feet, xz.z);
     }
 
     void SwitchCamera(bool toPlayer)
